@@ -1,0 +1,39 @@
+{%extends 'base.html'%}
+{%block content%}
+<div class="container-fluid" style="background-color: aliceblue;">
+     <h2 class="text-grey" style="text-align: center; font-weight: bold;">Popular on netflix</h2>
+    <div class="row">
+        {%for data in popular.results%}
+        <div class=" m-1">
+            <a href='youtube/{{data.id}}'>
+                <img class="" src="https://image.tmdb.org/t/p/w342/{{data.poster_path}}" width="150px"
+                    alt="Card image cap">
+            </a>
+        </div>
+        {%endfor%}
+    </div>
+    <h2 class="text-grey" style="text-align: center; font-weight: bold;">Upcoming ones</h2>
+    <div class="row">
+        {%for data in upcoming.results%}
+        <div class="card m-1">
+            <img src="https://image.tmdb.org/t/p/w342/{{data.poster_path}}" width="150px" alt="image">
+        </div>
+        {%endfor%}
+    </div>
+    <h2 class="text-grey" style="text-align: center; font-weight: bold;">Latest</h2>
+    {%for data in latest.results%}
+    <p>{{data.airing_today}}</p>
+    <img src="https://image.tmdb.org/t/p/w342/{{data.poster_path}}" width="150px" alt="image">
+    {%endfor%}
+    <h2 class="text-grey" style="text-align: center; font-weight: bold;">Top rated</h2>
+    <div class="row">
+        {%for data in trending.results%}
+        <p> {{ data.trending }}</p>
+        <div class="card m-1">
+
+            <img src="https://image.tmdb.org/t/p/w342/{{data.poster_path}}" width="150px" alt="image">
+        </div>
+        {%endfor%}
+    </div>
+    {%endblock%}
+</div>
