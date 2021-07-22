@@ -3,6 +3,8 @@ import requests,json
 import os
 from decouple import config
 from googleapiclient.discovery import build
+from .form import UserRegisterForm
+from django.contrib import messages
 
 # Create your views here.
 
@@ -47,3 +49,23 @@ def search_results(request):
     else:
         message = "You haven't searched for any term"
         return render(request, 'search.html',{"message":message})
+    
+
+def home(request):
+        # if request.user.is_authenticated:
+            # return redirect(to='/profile/')
+        return render(request,'user/home.html')
+    
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username =form.cleaned_data['username']
+            messages.success(request,f'Successfully created for {username}! Please login to continue')
+            
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+    return render(request,'user/register.html',{'form':form})
