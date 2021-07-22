@@ -42,3 +42,6 @@ class Video(models.Model):
     title:str = models.CharField(max_length=225,blank=True,null=True)
     file=models.FileField(upload_to='movies')
     
+class Email(models.Model):
+    name = models.CharField(max_length=30)
+    email= models.EmailField()
