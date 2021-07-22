@@ -1,8 +1,13 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 import requests,json
 import os
 from decouple import config
 from googleapiclient.discovery import build
+from .forms import UserRegisterForm,EmailLetterForm
+from django.contrib import messages
+from .email import send_welcome_email
+from .models import Email
+from django.http import JsonResponse,HttpResponseRedirect,HttpResponse
 
 # Create your views here.
 
@@ -47,3 +52,43 @@ def search_results(request):
     else:
         message = "You haven't searched for any term"
         return render(request, 'search.html',{"message":message})
+    
+
+def home(request):
+    form=EmailLetterForm()
+    if request.method == 'POST':
+        form = EmailLetterForm(request.POST)
+        if form.is_valid:
+            name = form.cleaned_data['your_name']
+            email = form.cleaned_data['email']
+            recipient = EmailLetterForm(name='name',email='email')
+            recipient.save()
+            send_welcome_email(name,email)
+            HttpResponseRedirect('home')
+    
+    if request.user.is_authenticated:
+        return redirect('clone')
+    return render(request,'user/home.html',{'form':form})
+    
+
+def register(request):
+    if request.method == 'POST':
+        form = UserRegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username =form.cleaned_data['username']
+            messages.success(request,f'Successfully created for {username}! Please login to continue')
+            
+            return redirect('login')
+    else:
+        form = UserRegisterForm()
+    return render(request,'user/register.html',{'form':form})
+
+def email(request):
+    name = request.POST .get('your_name')
+    email = request.POST.get('email')  
+    recipient = Email(name = name, email = email)
+    recipient.save()
+    send_welcome_email(name,email)  
+    data = {'success':'You have been successfully added to mailing list'}
+    return JsonResponse(data)

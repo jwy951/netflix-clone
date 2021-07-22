@@ -1,0 +1,2 @@
+Hello {{name}}
+Welcome to Netflix-clone where you find the most exiting movies and tv-series here 

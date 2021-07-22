@@ -41,6 +41,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bootstrap4',
     'netclone',
+    'crispy_forms',
+    'django.contrib.sites',
+    # 'django.contrib.sites',
+    
+    # third party apps
+    
+    # 'allauth',
+    # 'allauth.account',
+    # 'allauth.socialaccount',
 ]
 
 MIDDLEWARE = [
@@ -66,6 +75,9 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                
+                 # `allauth` needs this from django
+                'django.template.context_processors.request',
             ],
         },
     },
@@ -79,8 +91,10 @@ WSGI_APPLICATION = 'netflix.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'blogapp',
+        'USER': 'moringa',
+    'PASSWORD':'hello',
     }
 }
 
@@ -131,3 +145,28 @@ STATICFILES_DIRS = (
     )
 MEDIA_ROOT = ''
 MEDIA_URL = "/media/"
+AUTHENTICATION_BACKENDS = [
+    
+    # Needed to login by username in Django admin, regardless of `allauth`
+    'django.contrib.auth.backends.ModelBackend',
+
+    # `allauth` specific authentication methods, such as login by e-mail
+    'allauth.account.auth_backends.AuthenticationBackend',
+]
+# AUTH_USER_MODEL='netflixclone.CustomUser'
+SITE_ID = 1
+
+# ACCOUNT_AUTHENTICATION_METHOD='email'
+# ACCOUT_EMAIL_REQUIRED =True
+# ACCOUNT_EMAIL_VERIFICATION='none'
+# ACCOUNT_USERNAME_REQUIRED=False
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+LOGIN_REDIRECT_URL = 'clone'
+LOGIN_URL = 'login'
+EMAIL_USE_TLS = config('EMAIL_USE_TLS')
+EMAIL_HOST = config('EMAIL_HOST')
+EMAIL_PORT = config('EMAIL_PORT')
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
